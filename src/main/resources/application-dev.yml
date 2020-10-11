@@ -1,0 +1,20 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      show-sql: false
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
+
+ftp:
+  location:
+    folder: /Users/kchav/Documents/OneDrive/Job/mcm/ftp/files/
+    archive: /Users/kchav/Documents/OneDrive/Job/mcm/ftp/archive/
+    error: /Users/kchav/Documents/OneDrive/Job/mcm/ftp/error/
+    output: /Users/kchav/Documents/OneDrive/Job/mcm/output/
+
+thread:
+  polling: 100

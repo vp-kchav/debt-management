@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <appender name="SERVER_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/mcm-debt-management.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>logs/mcm-debt-management-%i.log.gz</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>5</maxIndex>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>300MB</maxFileSize>
+        </triggeringPolicy>
+        <encoder>
+            <pattern>
+                [%date{"yyyy-MM-dd'T'HH:mm:ss,SSSZ"}]-[%-5level]-[tid=%X{intuit_tid}]-[%logger{0}]-[%-4.-4line]-%msg %ex{full}%n
+            </pattern>
+        </encoder>
+    </appender>
+    
+    <appender name="SERVER_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <withJansi>true</withJansi>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                [%date{"yyyy-MM-dd'T'HH:mm:ss,SSSZ"}]-[%-5level]-[tid=%X{intuit_tid}]-[%logger{0}]-[%-4.-4line]-%msg %ex{full}%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SERVER_FILE_ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="SERVER_FILE" />
+        <includeCallerData>true</includeCallerData>
+    </appender>
+    
+    <logger name="com.intuit.v4.t4i.fact" level="DEBUG" additivity="false">
+        <springProfile name="default">
+            <appender-ref ref="SERVER_CONSOLE" />
+        </springProfile>
+        <appender-ref ref="SERVER_FILE_ASYNC" />
+    </logger>
+	
+	<logger name="com.intuit.v4.t4i.fact" level="DEBUG" additivity="false">
+        <springProfile name="dev">
+            <appender-ref ref="SERVER_CONSOLE" />
+        </springProfile>
+        <appender-ref ref="SERVER_FILE_ASYNC" />
+    </logger>
+
+    <root level="INFO">
+        <springProfile name="default">
+            <appender-ref ref="SERVER_CONSOLE" />
+        </springProfile>
+        <appender-ref ref="SERVER_FILE_ASYNC" />
+        
+    </root>
+    <root level="INFO">
+        <springProfile name="dev">
+            <appender-ref ref="SERVER_CONSOLE" />
+        </springProfile>
+        <appender-ref ref="SERVER_FILE_ASYNC" />
+    </root>
+
+</configuration>

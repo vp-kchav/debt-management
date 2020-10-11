@@ -1,0 +1,30 @@
+server:
+  port: "8080"
+
+path:
+  helloworld: /v1/helloworld
+
+#properties 
+scheduled:
+  cron:
+    read: 0 48 11 * * *
+    output: 0 49 11 * * *
+consumer:
+  add: consumer
+
+rest:
+  content:
+    type: Content-Type=application/xml
+
+max:
+  message:
+    perDay: 4
+  account: 5
+
+file:
+  support: xml
+#  datasource:
+#    driver-class-name=org: org.hsqldb.jdbc.JDBCDriver
+#    url: jdbc:hsqldb:mem:testdb;DB_CLOSE_DELAY=-1
+#    username: sa
+#    password:
