@@ -21,6 +21,11 @@ public class ConsumerServiceImpl implements ConsumerService{
     }
 
     @Override
+    public ConsumerEntity findByConsumerId(String consumerId) {
+        return consumerRepository.findConsumerEntityByConsumerId(consumerId);
+    }
+
+    @Override
     public ConsumerEntity findConsumerById(Long id) {
         return consumerRepository.findById(id).get();
     }
@@ -29,13 +34,13 @@ public class ConsumerServiceImpl implements ConsumerService{
     public List<ConsumerEntity> findConsumerEntityToday() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
-        return consumerRepository.findConsumerEntityByCreatedTimestampBetween(yesterday, now);
+        return consumerRepository.findConsumerEntityByLastUpdatedTimestampBetween(yesterday, now);
     }
 
     @Override
     public Integer countConsumerAddedByDate() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
-        return consumerRepository.countConsumerEntitiesByCreatedTimestampBetween(yesterday, now);
+        return consumerRepository.countConsumerEntitiesByLastUpdatedTimestampBetween(yesterday, now);
     }
 }

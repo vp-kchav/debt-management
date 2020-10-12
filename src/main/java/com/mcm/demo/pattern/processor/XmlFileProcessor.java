@@ -78,7 +78,7 @@ public class XmlFileProcessor extends FileProcessor {
 			log.error("Error while processing xml file  : ", e.getMessage());
 			locationMove = getFtpErrorLocation();
 		} finally {
-			//moveFile(file,locationMove);
+			moveFile(file,locationMove);
 		}
 	}
 
@@ -89,11 +89,11 @@ public class XmlFileProcessor extends FileProcessor {
 	public void processOutput(final List<ConsumerEntity> listConsumer) {
 		log.info("XmlFileProcessor started processing output file for: {} ", LocalDateTime.now().toString());
 		ConsumersOutput output = new ConsumersOutput();
-		listConsumer.forEach(consumerEntity -> {
-			ConsumerOutput consumerOutput = getDomainObjectMapper().map(consumerEntity, ConsumerOutput.class);
-			output.getConsumer().add(consumerOutput);
-		});
 		try {
+			listConsumer.forEach(consumerEntity -> {
+				ConsumerOutput consumerOutput = getDomainObjectMapper().map(consumerEntity, ConsumerOutput.class);
+				output.getConsumer().add(consumerOutput);
+			});
 			JAXBContext jaxbContext = JAXBContext.newInstance(ConsumersOutput.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -109,20 +109,6 @@ public class XmlFileProcessor extends FileProcessor {
 			log.error("Exception error during processing output file. {}", e.getMessage());
 		} catch (Exception e) {
 			log.error("Exception error during mapping Entity to  output Object. {}", e.getMessage());
-		}
-	}
-
-	/**
-	 * @param file
-	 * @param destination
-	 */
-	private void moveFile(final File file, final String destination) {
-		try {
-			log.info("Started moving file to {} after processing file {}", destination, file.getName());
-			File destDir = new File(destination.concat(DateTimeUtils.INSTANCE.getDateAsString(ApplicationConstants.DATE_FORMAT)));
-			FileUtils.moveToDirectory(file, destDir, true);
-		} catch (IOException e) {
-			log.error("File processing was completed, there was an error during moving file: {}", e.getMessage());
 		}
 	}
 }

@@ -15,7 +15,7 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-@DiscriminatorValue("Credit_Card")
+@DiscriminatorValue("CreditCard_Account")
 public class CreditCardAccountEntity extends DebtEntity {
 
     @Column(name = "expiration_date")

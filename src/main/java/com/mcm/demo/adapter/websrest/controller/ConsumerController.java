@@ -60,7 +60,8 @@ public class ConsumerController {
 				return ResponseEntity.status(HttpStatus.OK).body("Successfully Added message.");
 			}
 		} catch(Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error : "+ e.getMessage());
+
 		}
 	}
 

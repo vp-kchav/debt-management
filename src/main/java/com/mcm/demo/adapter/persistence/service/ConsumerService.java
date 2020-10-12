@@ -18,6 +18,14 @@ public interface ConsumerService {
 
     /**
      *
+     * @param consumerId
+     * @return
+     */
+    ConsumerEntity findByConsumerId(String consumerId);
+
+
+    /**
+     *
      * @param Id
      * @return
      */

@@ -18,15 +18,22 @@ public class ConsumerPersistenceAdapter {
     private ConsumerServiceImpl consumerService;
 
     @Transactional
-    public Boolean createConsumer(final ConsumerEntity consumerEntity) {
+    public void createConsumer(final ConsumerEntity consumerEntity) {
         try {
-            populateAuditColumn(consumerEntity);
-            ConsumerEntity savedConsumerEntity = consumerService.save(consumerEntity);
-            log.info("Consumer entity after mapping : {} ", consumerEntity);
+            ConsumerEntity existingConsumer = consumerService.findByConsumerId(consumerEntity.getConsumerId());
+            boolean updateCreationDate = true;
+            if(existingConsumer != null) {
+                //existingConsumer.getDebts().addAll(consumerEntity.getDebts());
+                consumerEntity.setId(existingConsumer.getId());
+                updateCreationDate = false;
+                log.info("consumerId is already exist in the DB : {} ", existingConsumer);
+            }
+            populateAuditColumn(consumerEntity,updateCreationDate);
+            consumerService.save(consumerEntity);
+            log.info("Consumer entity after added : {} ", consumerEntity);
         } catch (Exception e) {
             log.error("There was an error while processing data to Database");
         }
-        return null;
     }
 
     @Transactional
@@ -44,8 +51,10 @@ public class ConsumerPersistenceAdapter {
         return consumerService.countConsumerAddedByDate();
     }
 
-    private void populateAuditColumn(final ConsumerEntity consumerEntity){
-        consumerEntity.setCreatedTimestamp(LocalDateTime.now());
+    private void populateAuditColumn(final ConsumerEntity consumerEntity, final boolean updateCreationDate){
+        if(updateCreationDate) {
+            consumerEntity.setCreatedTimestamp(LocalDateTime.now());
+        }
         consumerEntity.setLastUpdatedTimestamp(LocalDateTime.now());
         //TODO: update who did this for createdBy
     }

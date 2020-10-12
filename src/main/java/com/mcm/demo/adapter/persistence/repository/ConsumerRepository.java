@@ -10,7 +10,9 @@ import java.util.List;
 @Repository
 public interface ConsumerRepository extends CrudRepository<ConsumerEntity,Long> {
 
-    List<ConsumerEntity> findConsumerEntityByCreatedTimestampBetween(LocalDateTime startDateTime,LocalDateTime endDateTime);
+    List<ConsumerEntity> findConsumerEntityByLastUpdatedTimestampBetween(LocalDateTime startDateTime,LocalDateTime endDateTime);
 
-    Integer countConsumerEntitiesByCreatedTimestampBetween(LocalDateTime startDateTime,LocalDateTime endDateTime);
+    Integer countConsumerEntitiesByLastUpdatedTimestampBetween(LocalDateTime startDateTime,LocalDateTime endDateTime);
+
+    ConsumerEntity findConsumerEntityByConsumerId(String consumerId);
 }

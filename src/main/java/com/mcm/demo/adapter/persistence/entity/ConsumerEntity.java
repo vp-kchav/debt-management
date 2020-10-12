@@ -10,21 +10,16 @@ import java.util.Set;
 //@ToString(callSuper=true, includeFieldNames=true)
 @Table(name = "consumer")
 @SequenceGenerator(initialValue = 1, name = "idgen", sequenceName = "candidate_seq")
-@DiscriminatorColumn(name="Debt_Type")
+//@DiscriminatorColumn(name="debt_type")
 @Getter
 @Setter
 @Entity
 public class ConsumerEntity extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")
-    @Column(name = "id")
-    private Long id;
-
     @Column(name = "consumerId", nullable = false)
     private String consumerId;
 
-    @Column(name = "consumerName", nullable = false)
+    @Column(name = "consumerName")
     private String consumerName;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "consumer", fetch = FetchType.EAGER)

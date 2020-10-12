@@ -15,6 +15,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @SequenceGenerator(initialValue = 1, name = "idgen", sequenceName = "note_seq")
+@DiscriminatorColumn(name="debt_type")
 public class DebtEntity {
 
     @Id
