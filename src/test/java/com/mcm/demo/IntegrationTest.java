@@ -14,8 +14,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 /**
  * @author kimtey
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+//@RunWith(SpringRunner.class)
+//@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class IntegrationTest {
 
     @Autowired

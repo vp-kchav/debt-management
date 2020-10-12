@@ -3,8 +3,8 @@ package com.mcm.demo.processor;
 import com.mcm.demo.adapter.persistence.adapter.ConsumerPersistenceAdapter;
 import com.mcm.demo.adapter.persistence.mapper.DomainObjectMapper;
 import com.mcm.demo.pattern.processor.XmlFileProcessor;
+import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -19,7 +19,7 @@ import java.io.IOException;
  * @author kchav
  */
 @RunWith(MockitoJUnitRunner.class)
-class XmlFileProcessorTest {
+public class XmlFileProcessorTest {
 
     @InjectMocks
     @Spy
@@ -40,7 +40,7 @@ class XmlFileProcessorTest {
     }
 
     @Test
-    void testProcess() throws IOException {
+    public void testProcess() throws IOException {
         File file = new File(getClass().getClassLoader().getResource("consumer.xml").getFile());
         xmlFileProcessor.process(file);
         //fileProcessingScheduledTasks.readingBatchFile();

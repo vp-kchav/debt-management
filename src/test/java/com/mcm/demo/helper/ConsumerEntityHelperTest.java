@@ -8,13 +8,13 @@ import com.mcm.demo.model.request.Debt;
 import com.mcm.demo.pattern.builder.ConsumerEntityHelper;
 import com.mcm.demo.util.DataUtils;
 import org.junit.Assert;
+import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 /**
  * @author kchav
  */
-class ConsumerEntityHelperTest {
+public class ConsumerEntityHelperTest {
 
 
     @BeforeEach
@@ -23,7 +23,7 @@ class ConsumerEntityHelperTest {
     }
 
     @Test
-    void testAddDebtEntity_Bank() {
+    public void testAddDebtEntity_Bank() {
         Debt debt = DataUtils.getDebtBank();
         ConsumerEntity entity = new ConsumerEntity();
         ConsumerEntityHelper.INSTANCE.addDebtEntity(entity,debt);
@@ -32,7 +32,7 @@ class ConsumerEntityHelperTest {
     }
 
     @Test
-    void testAddDebtEntity_CreditCard() {
+    public void testAddDebtEntity_CreditCard() {
         Debt debt = DataUtils.getDebtCredit();
         ConsumerEntity entity = new ConsumerEntity();
         ConsumerEntityHelper.INSTANCE.addDebtEntity(entity,debt);
@@ -41,13 +41,11 @@ class ConsumerEntityHelperTest {
     }
 
     @Test
-    void testAddDebtEntity_Mortgage() {
+    public void testAddDebtEntity_Mortgage() {
         Debt debt = DataUtils.getDebtMortgage();
         ConsumerEntity entity = new ConsumerEntity();
         ConsumerEntityHelper.INSTANCE.addDebtEntity(entity,debt);
         Assert.assertNotNull(entity.getDebts());
         Assert.assertTrue(entity.getDebts().iterator().next() instanceof MortgageAccountEntity);
     }
-
-
 }

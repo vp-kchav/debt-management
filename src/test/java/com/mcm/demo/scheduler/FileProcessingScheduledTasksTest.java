@@ -4,8 +4,9 @@ import com.mcm.demo.model.FileType;
 import com.mcm.demo.pattern.processor.FileProcessorFactory;
 import com.mcm.demo.pattern.processor.XmlFileProcessor;
 import com.mcm.demo.scheduled.FileProcessingScheduledTasks;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -17,7 +18,7 @@ import java.io.IOException;
  * @author kchav
  */
 @RunWith(MockitoJUnitRunner.class)
-class FileProcessingScheduledTasksTest {
+public class FileProcessingScheduledTasksTest {
 
     @InjectMocks
     @Spy
@@ -29,7 +30,7 @@ class FileProcessingScheduledTasksTest {
     @Mock
     private XmlFileProcessor processor;
 
-    @BeforeEach
+    @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(fileProcessingScheduledTasks, "ftpFolderLocation","/Users/kchav/Documents/OneDrive/Job/mcm/ftp/files/");
@@ -38,7 +39,7 @@ class FileProcessingScheduledTasksTest {
     }
 
     @Test
-    void testFileOutputScheduledTasks() throws IOException {
+    public void testFileOutputScheduledTasks() throws IOException {
         fileProcessingScheduledTasks.readingBatchFile();
     }
 

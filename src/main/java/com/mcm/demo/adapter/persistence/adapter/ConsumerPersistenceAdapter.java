@@ -19,9 +19,13 @@ public class ConsumerPersistenceAdapter {
 
     @Transactional
     public Boolean createConsumer(final ConsumerEntity consumerEntity) {
-        populateAuditColumn(consumerEntity);
-        ConsumerEntity savedConsumerEntity  = consumerService.save(consumerEntity);
-        log.info("Consumer entity after mapping : {} ", consumerEntity);
+        try {
+            populateAuditColumn(consumerEntity);
+            ConsumerEntity savedConsumerEntity = consumerService.save(consumerEntity);
+            log.info("Consumer entity after mapping : {} ", consumerEntity);
+        } catch (Exception e) {
+            log.error("There was an error while processing data to Database");
+        }
         return null;
     }
 

@@ -4,8 +4,9 @@ import com.mcm.demo.model.FileType;
 import com.mcm.demo.pattern.processor.FileProcessorFactory;
 import com.mcm.demo.pattern.processor.XmlFileProcessor;
 import com.mcm.demo.scheduled.FileOutputScheduledTasks;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -17,7 +18,7 @@ import java.io.IOException;
  * @author kchav
  */
 @RunWith(MockitoJUnitRunner.class)
-class FileOutputScheduledTasksTest {
+public class FileOutputScheduledTasksTest {
 
     @InjectMocks
     @Spy
@@ -29,16 +30,16 @@ class FileOutputScheduledTasksTest {
     @Mock
     private XmlFileProcessor processor;
 
-    @BeforeEach
+    @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(fileOutputScheduledTasks, "fileSupport","xml");
-        Mockito.when(fileProcessorFactory.getFileProcessor(Mockito.any(FileType.class))).thenReturn(processor);
+        //Mockito.when(fileProcessorFactory.getFileProcessor(Mockito.any(FileType.class))).thenReturn(processor);
         fileProcessorFactory = Mockito.mock(FileProcessorFactory.class);
     }
 
     @Test
-    void testFileOutputScheduledTasks() throws IOException {
+    public void testFileOutputScheduledTasks() throws IOException {
         fileOutputScheduledTasks.processOutputFile();
     }
 

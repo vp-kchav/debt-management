@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 
@@ -46,6 +47,7 @@ public class XmlFileProcessor extends FileProcessor {
 	@Override
 	public void process(File file) {
 		String locationMove = "";
+		AtomicInteger numberOfRecordError = new AtomicInteger();
 		try {
 			log.info("XmlFileProcessor started processing file: {} ", file.getName());
 			JAXBContext jc = JAXBContext.newInstance(Consumers.class);
@@ -57,16 +59,25 @@ public class XmlFileProcessor extends FileProcessor {
 			Consumers consumers = (Consumers) unmarshaller.unmarshal(document);
 			if (consumers != null) {
 				consumers.getConsumer().forEach(xmlConsumer -> {
-					ConsumerEntity entity = getDomainObjectMapper().mapXmlConsumerToConsumerEntity(xmlConsumer);
-					getConsumerPersistenceAdapter().createConsumer(entity);
+					try {
+						ConsumerEntity entity = getDomainObjectMapper().mapXmlConsumerToConsumerEntity(xmlConsumer);
+						getConsumerPersistenceAdapter().createConsumer(entity);
+						log.error("comsumerID: {} on file {} had been added successfully", xmlConsumer.getConsumerId(), file.getName());
+					} catch (Exception e) {
+						log.error("Error happened when processing comsumerID: {} on file {} ", xmlConsumer.getConsumerId(), file.getName());
+						numberOfRecordError.getAndIncrement();
+					}
 				});
-				locationMove = getFtpArchiveLocation();
+				if(numberOfRecordError.get() == consumers.getConsumer().size()) {
+					locationMove = getFtpErrorLocation();
+				} else {
+					locationMove = getFtpArchiveLocation();
+				}
 			}
 		} catch (ParserConfigurationException | SAXException | IOException | JAXBException e) {
 			log.error("Error while processing xml file  : ", e.getMessage());
 			locationMove = getFtpErrorLocation();
 		} finally {
-			//TODO : uncomment this, because for testing purpose need to comment it
 			//moveFile(file,locationMove);
 		}
 	}
@@ -75,9 +86,8 @@ public class XmlFileProcessor extends FileProcessor {
 	 * @param
 	 */
 	@Override
-	public void processOutput() {
+	public void processOutput(final List<ConsumerEntity> listConsumer) {
 		log.info("XmlFileProcessor started processing output file for: {} ", LocalDateTime.now().toString());
-		List<ConsumerEntity> listConsumer = getConsumerPersistenceAdapter().findConsumerEntityToday();
 		ConsumersOutput output = new ConsumersOutput();
 		listConsumer.forEach(consumerEntity -> {
 			ConsumerOutput consumerOutput = getDomainObjectMapper().map(consumerEntity, ConsumerOutput.class);
@@ -97,6 +107,8 @@ public class XmlFileProcessor extends FileProcessor {
 			log.info(output.toString());
 		} catch (JAXBException | IOException e) {
 			log.error("Exception error during processing output file. {}", e.getMessage());
+		} catch (Exception e) {
+			log.error("Exception error during mapping Entity to  output Object. {}", e.getMessage());
 		}
 	}
 

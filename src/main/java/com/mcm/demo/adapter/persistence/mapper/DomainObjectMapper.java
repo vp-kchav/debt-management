@@ -113,6 +113,7 @@ public class DomainObjectMapper extends ConfigurableMapper {
      * @param debts
      */
     private void processMappingDebts(ConsumerEntity consumerEntity,List<Debt> debts) {
+        log.info("Starting processing map debts with thread polling {}",threadPolling);
         ForkJoinPool accountThreadPool = new ForkJoinPool(threadPolling);
         accountThreadPool.submit(() -> {
             debts.parallelStream()
@@ -120,5 +121,6 @@ public class DomainObjectMapper extends ConfigurableMapper {
                         ConsumerEntityHelper.INSTANCE.addDebtEntity(consumerEntity,debt);
                     });
         });
+        log.info("completed processing map debts with thread polling");
     }
 }

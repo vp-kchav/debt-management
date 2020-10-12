@@ -49,7 +49,7 @@ public class ConsumerController {
 		try {
 			int countMessageAdded = consumerPersistenceAdapter.countConsumerEntityToday();
 			if(countMessageAdded >= maxMessagePerDay) {
-				return ResponseEntity.status(HttpStatus.OK).body("Sorry, we have reached which is max message per day, which is " + maxMessagePerDay);
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Sorry, we have reached which is max message per day, which is " + maxMessagePerDay);
 			} else if(consumerBody.getDebts().size() > maxAccountPerDay) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Account should not be more than " + maxAccountPerDay );
 			} else {
