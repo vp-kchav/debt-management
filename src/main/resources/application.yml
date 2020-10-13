@@ -7,8 +7,8 @@ path:
 #properties 
 scheduled:
   cron:
-    read: 0 25 11 * * *
-    output: 0 26 11 * * *
+    read: 0 0 2 * * *
+    output: 0 0 1 * * *
 consumer:
   add: consumer
 
